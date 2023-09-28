@@ -1,5 +1,6 @@
 package edu.arsw.luka.lukaBack.domain;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 import lombok.NonNull;
@@ -15,8 +16,8 @@ public class Subasta {
     @NonNull
     private final String nombre;
 
-    private Date fechaInicio;
-    private Date fechaFin;
+    private LocalDateTime fechaInicio;
+    private LocalDateTime fechaFin;
 
     @NonNull
     private Estado estado;
