@@ -14,14 +14,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.arsw.luka.lukaBack.domain.Subasta;
+
 @RestController
 @RequestMapping(value = "/subasta")
 public class SubastaController {
 
     @PostMapping(value = "")
-    public ResponseEntity<?> crearSubasta(@RequestBody Object subasta) {
+    public ResponseEntity<?> crearSubasta(@RequestBody Subasta subasta) {
         try{
-            return ResponseEntity.status(201).body("Subasta :" + subasta +" creada");
+            return ResponseEntity.status(201).body("Subasta :" + subasta.getNombre() +" creada");
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
         }
