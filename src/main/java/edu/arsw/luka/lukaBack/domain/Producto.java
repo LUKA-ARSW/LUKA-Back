@@ -5,12 +5,16 @@ import java.awt.Image;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 
 @Getter
 @Setter
 @RequiredArgsConstructor
+@AllArgsConstructor
+@NoArgsConstructor
 public class Producto {
 
     @NonNull
@@ -19,7 +23,7 @@ public class Producto {
     private String descripcion;
 
     @NonNull
-    private Image foto;
+    private String foto;
 
     @NonNull
     private Double precio;
