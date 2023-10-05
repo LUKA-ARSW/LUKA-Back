@@ -2,6 +2,7 @@ package edu.arsw.luka.lukaBack.controller;
 
 import java.time.LocalDateTime;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,14 +16,23 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import edu.arsw.luka.lukaBack.domain.Subasta;
+import edu.arsw.luka.lukaBack.services.SubastaServicio;
 
 @RestController
 @RequestMapping(value = "/subasta")
 public class SubastaController {
 
+    private SubastaServicio subastaServicio;
+
+    @Autowired
+    public SubastaController(SubastaServicio subastaServicio) {
+        this.subastaServicio = subastaServicio;
+    }
+
     @PostMapping(value = "")
     public ResponseEntity<?> crearSubasta(@RequestBody Subasta subasta) {
         try{
+            subastaServicio.agregarSubasta(subasta);
             return ResponseEntity.status(201).body("Subasta :" + subasta.getNombre() +" creada");
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
@@ -48,8 +58,9 @@ public class SubastaController {
     }
 
     @PutMapping(value = "/{nombre}")
-    public ResponseEntity<?> modificarFechaInicioSubasta(@RequestParam("fechaInicio") LocalDateTime fechaInicio, @RequestParam("fechaFin") LocalDateTime fechaFin) {
+    public ResponseEntity<?> modificarFechaSubasta(@RequestParam(required = false, value="fechaInicio") LocalDateTime fechaInicio, @RequestParam(required = false, value="fechaFin") LocalDateTime fechaFin) {
         try{
+
             return ResponseEntity.status(201).body("Fechas de la subasta actualizadas");
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
