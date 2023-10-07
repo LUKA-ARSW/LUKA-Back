@@ -18,6 +18,9 @@ import lombok.NoArgsConstructor;
 public class Producto {
 
     @NonNull
+    private String idProducto;
+
+    @NonNull
     private String nombre;
 
     private String descripcion;
