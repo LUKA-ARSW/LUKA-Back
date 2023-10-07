@@ -7,6 +7,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
 import edu.arsw.luka.lukaBack.services.SubastaServicio;
 
@@ -42,7 +44,8 @@ public class SubastaController {
     @GetMapping(value = "")
     public ResponseEntity<?> getTodasLasSubastas() {
         try{
-            return ResponseEntity.status(200).body("Subastas Obtenidas");
+            var result=subastaServicio.consultarTodasLasSubastas();
+            return ResponseEntity.status(200).body(result);
         }catch(Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
@@ -51,6 +54,7 @@ public class SubastaController {
     @GetMapping(value = "/{nombre}")
     public ResponseEntity<?> getSubastaPorNombre(@PathVariable("nombre") String nombre) {
         try{
+            subastaServicio.consultarSubastaPorNombre(nombre);
             return ResponseEntity.status(200).body("Subasta: " + nombre);
         }catch(Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
@@ -58,9 +62,9 @@ public class SubastaController {
     }
 
     @PutMapping(value = "/{nombre}")
-    public ResponseEntity<?> modificarFechaSubasta(@RequestParam(required = false, value="fechaInicio") LocalDateTime fechaInicio, @RequestParam(required = false, value="fechaFin") LocalDateTime fechaFin) {
+    public ResponseEntity<?> modificarFechaSubasta(@PathVariable("nombre") String nombre,@RequestParam(required = false, value="fechaInicio") LocalDateTime fechaInicio, @RequestParam(required = false, value="fechaFin") LocalDateTime fechaFin) {
         try{
-
+            subastaServicio.modificarFechaSubasta(nombre, fechaInicio, fechaFin);
             return ResponseEntity.status(201).body("Fechas de la subasta actualizadas");
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
@@ -70,7 +74,29 @@ public class SubastaController {
     @DeleteMapping(value = "/{nombre}")
     public ResponseEntity<?> eliminarSubastabyId(@PathVariable("nombre") String nombre) {
         try{
+            subastaServicio.eliminarSubasta(nombre);
             return ResponseEntity.status(200).body("La subasta: " + nombre + " eliminada");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping(value = "/{nombre}/producto")
+    public ResponseEntity<?> agregarProductoSubasta(@PathVariable("nombre") String nombre, @RequestBody Producto producto) {
+        try{
+            subastaServicio.agregarProductoSubasta(nombre, producto);
+            return ResponseEntity.status(200).body("el producto ha sido agregado a la subasta: " + nombre);
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+
+        }
+    }
+
+    @DeleteMapping(value = "/{nombre}/producto/{idProducto}")
+    public ResponseEntity<?> eliminarProductoSubasta(@PathVariable("nombre") String nombre, @PathVariable("idProducto") String idProducto) {
+        try{
+            subastaServicio.eliminarProductoSubasta(nombre, idProducto);
+            return ResponseEntity.status(200).body("el producto ha sido eliminado de la subasta: " + nombre);
         }catch(Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }

@@ -1,5 +1,6 @@
 package edu.arsw.luka.lukaBack.persistence.repositorio;
 
+import java.util.List;
 import java.time.LocalDateTime;
 
 import edu.arsw.luka.lukaBack.domain.Subasta;
@@ -11,5 +12,6 @@ public interface SubastaRepositorio {
 
     Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin) throws LukaException;
 
+    List<Subasta> consultarTodasLasSubastas();
     
 }
