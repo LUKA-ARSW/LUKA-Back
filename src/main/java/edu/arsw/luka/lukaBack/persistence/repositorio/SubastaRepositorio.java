@@ -14,4 +14,8 @@ public interface SubastaRepositorio {
 
     List<Subasta> consultarTodasLasSubastas();
     
+    Subasta consultarSubastaPorNombre(String nombre) throws LukaException;
+
+    void eliminarSubasta(String nombre) throws LukaException;
+    
 }

@@ -66,7 +66,27 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
 
     @Override
     public Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin) throws LukaException{
-        return null;
+        SubastaEntidad subastaEntidad = mongoSubastaInterface.findById(nombre)
+                                        .orElseThrow(() -> new LukaException("No existe la subasta"));
+        subastaEntidad.setFechaInicio(fechaInicio);
+        subastaEntidad.setFechaFin(fechaFin);
+        SubastaEntidad subastaResult=mongoSubastaInterface.save(subastaEntidad);
+        return new Subasta(
+            subastaResult.getNombre(),
+            subastaResult.getFechaInicio(),
+            subastaResult.getFechaFin(),
+            subastaResult.getEstado(),
+            subastaResult.getProductos().stream().map(producto -> 
+                new Producto( 
+                    producto.getIdProducto(),
+                    producto.getNombre(), 
+                    producto.getDescripcion(), 
+                    producto.getFoto(), 
+                    producto.getPrecio(), 
+                    producto.getCategoria())
+            ).collect(Collectors.toList())
+           
+        );
     }
 
     @Override
@@ -91,6 +111,33 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
         ).collect(Collectors.toList());
     }
 
+    @Override
+    public void eliminarSubasta(String nombre) {
+        mongoSubastaInterface.deleteById(nombre);
+        
+    }
+
+    @Override
+    public Subasta consultarSubastaPorNombre(String nombre) throws LukaException{
+        SubastaEntidad subasta= mongoSubastaInterface.findById(nombre).orElseThrow(() -> new LukaException("No existe la subasta"));
+        return new Subasta(
+            subasta.getNombre(),
+            subasta.getFechaInicio(),
+            subasta.getFechaFin(),
+            subasta.getEstado(),
+            subasta.getProductos().stream().map(producto -> 
+                new Producto( 
+                    producto.getIdProducto(),
+                    producto.getNombre(), 
+                    producto.getDescripcion(), 
+                    producto.getFoto(), 
+                    producto.getPrecio(), 
+                    producto.getCategoria()
+                )
+            ).collect(Collectors.toList())
+        );
+       
+    }
 
     
 }
