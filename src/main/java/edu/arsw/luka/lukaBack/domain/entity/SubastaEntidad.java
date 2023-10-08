@@ -7,7 +7,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import edu.arsw.luka.lukaBack.domain.Estado;
-import edu.arsw.luka.lukaBack.domain.Producto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

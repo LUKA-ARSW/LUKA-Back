@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
 import edu.arsw.luka.lukaBack.exception.LukaException;
@@ -37,6 +38,7 @@ public class SubastaServicioImpl implements SubastaServicio {
         
     }
 
+
     @Override
     public List<Subasta> consultarTodasLasSubastas() {
         return subastaRepositorio.consultarTodasLasSubastas();
@@ -44,15 +46,32 @@ public class SubastaServicioImpl implements SubastaServicio {
     }
 
     @Override
-    public Subasta consultarSubastaPorNombre(String nombre) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'consultarSubastaPorNombre'");
+    public Subasta consultarSubastaPorNombre(String nombre) throws LukaException{
+        return subastaRepositorio.consultarSubastaPorNombre(nombre);
+        
+    }
+
+    @Override
+    public Subasta modificarEstadoSubasta(String nombre) throws LukaException{
+        Subasta result=consultarSubastaPorNombre(nombre);
+        LocalDateTime fechaComparar = LocalDateTime.now();
+
+        if(fechaComparar.isBefore(result.getFechaInicio())){
+            result.setEstado(Estado.PROGRAMADA);
+            
+        }else if(fechaComparar.isAfter(result.getFechaFin())){
+            result.setEstado(Estado.FINALIZADA);
+        }else{
+            result.setEstado(Estado.EN_CURSO);
+        }
+
+        return subastaRepositorio.agregarSubasta(result);
+
     }
 
     @Override
     public void eliminarSubasta(String nombre) throws LukaException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarSubasta'");
+        subastaRepositorio.eliminarSubasta(nombre);
     }
 
     @Override

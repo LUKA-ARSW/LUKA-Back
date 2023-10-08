@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
 import edu.arsw.luka.lukaBack.services.SubastaServicio;
@@ -52,16 +53,16 @@ public class SubastaController {
     }
 
     @GetMapping(value = "/{nombre}")
-    public ResponseEntity<?> getSubastaPorNombre(@PathVariable("nombre") String nombre) {
+    public ResponseEntity<?> getSubastaPorNombre(@PathVariable(required =true, value ="nombre") String nombre) {
         try{
-            subastaServicio.consultarSubastaPorNombre(nombre);
-            return ResponseEntity.status(200).body("Subasta: " + nombre);
+            var result= subastaServicio.consultarSubastaPorNombre(nombre);
+            return ResponseEntity.status(200).body(result);
         }catch(Exception e){
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
-    @PutMapping(value = "/{nombre}")
+    @PatchMapping(value = "/{nombre}/fecha")
     public ResponseEntity<?> modificarFechaSubasta(@PathVariable("nombre") String nombre,@RequestParam(required = false, value="fechaInicio") LocalDateTime fechaInicio, @RequestParam(required = false, value="fechaFin") LocalDateTime fechaFin) {
         try{
             subastaServicio.modificarFechaSubasta(nombre, fechaInicio, fechaFin);
@@ -69,6 +70,16 @@ public class SubastaController {
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
         }
+    }
+
+   @PatchMapping(value = "/{nombre}/estado")
+   public ResponseEntity<?> modificarEstadoSubasta(@PathVariable(value="nombre") String nombre) {
+       try{
+           subastaServicio.modificarEstadoSubasta(nombre);
+           return ResponseEntity.status(201).body("Estado de la subasta actualizado");
+       }catch(Exception e){
+           return ResponseEntity.status(403).body(e.getMessage());
+       }
     }
 
     @DeleteMapping(value = "/{nombre}")
