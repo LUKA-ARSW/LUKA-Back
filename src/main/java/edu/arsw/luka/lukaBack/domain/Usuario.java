@@ -24,7 +24,9 @@ public class Usuario {
 
     @NonNull
     private String numDocumento;
-  
+
+    @NonNull
+    private String contrasena;
 
 
     
