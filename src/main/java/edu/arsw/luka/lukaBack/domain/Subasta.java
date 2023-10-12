@@ -27,5 +27,18 @@ public class Subasta {
     @Setter(value = AccessLevel.NONE)
     private Collection<Producto> productos;
 
-    
+    public void agregarProducto(Producto producto) {
+        productos.add(producto);
+    }
+
+    public boolean eliminarProducto(Producto producto) {
+        return productos.remove(producto);
+    }
+
+    public boolean eliminarProducto(String idProducto) {
+        Producto productoEliminar = productos.stream()
+                    .filter(producto -> producto.getIdProducto().equals(idProducto))
+                    .findFirst().get();
+        return eliminarProducto(productoEliminar);
+    }
 }

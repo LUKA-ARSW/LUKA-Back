@@ -75,15 +75,13 @@ public class SubastaServicioImpl implements SubastaServicio {
     }
 
     @Override
-    public Producto agregarProductoSubasta(String nombre, Producto producto) throws LukaException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'agregarProductoSubasta'");
+    public void agregarProductoSubasta(String nombre, Producto producto) throws LukaException {
+        subastaRepositorio.agregarProductoSubasta(nombre, producto);
     }
 
     @Override
     public void eliminarProductoSubasta(String nombre, String idProducto) throws LukaException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'eliminarProductoSubasta'");
+        subastaRepositorio.eliminarProductoSubasta(nombre, idProducto);
     }
     
 }
