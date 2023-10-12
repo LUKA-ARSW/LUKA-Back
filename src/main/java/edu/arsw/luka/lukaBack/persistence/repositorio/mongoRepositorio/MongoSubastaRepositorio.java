@@ -139,5 +139,21 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
        
     }
 
+    @Override
+    public void agregarProductoSubasta(String nombre, Producto producto) throws LukaException {
+        Subasta subasta =consultarSubastaPorNombre(nombre);
+        subasta.agregarProducto(producto);
+        agregarSubasta(subasta);
+
+    }
+
+    @Override
+    public void eliminarProductoSubasta(String nombre, String idProducto) throws LukaException {
+        Subasta subasta =consultarSubastaPorNombre(nombre);
+        subasta.eliminarProducto(idProducto);
+        agregarSubasta(subasta);
+        
+    }
+
     
 }
