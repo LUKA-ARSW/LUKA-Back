@@ -11,9 +11,19 @@ import lombok.Getter;
 public class Sala {
 
     @NonNull
-    private Subasta subasta;
+    private String nombre;
 
     @NonNull
+    private Subasta subasta;
+
+
     private Collection<Comprador> compradores;
+
+    private Collection<ElementoSubasta> elementoSubasta;
+
+    
+    public void agregarCompradore(Comprador comprador) {
+        compradores.add(comprador);
+    }
     
 }
