@@ -4,10 +4,11 @@ import java.util.Collection;
 
 import lombok.NonNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
+
 
 @AllArgsConstructor
-@Getter
+@Data
 public class Sala {
 
     @NonNull
@@ -17,12 +18,12 @@ public class Sala {
     private Subasta subasta;
 
 
-    private Collection<Comprador> compradores;
+    private Collection<String> compradores;
 
     private Collection<ElementoSubasta> elementoSubasta;
 
     
-    public void agregarCompradore(Comprador comprador) {
+    public void agregarComprador(String comprador) {
         compradores.add(comprador);
     }
     

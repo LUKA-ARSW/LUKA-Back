@@ -5,6 +5,7 @@ import java.util.List;
 import edu.arsw.luka.lukaBack.domain.Sala;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 
+
 public interface SalaRepositorio {
     Sala agregarSala(Sala sala) throws LukaException;
     List<Sala> consultarTodasLasSalas();

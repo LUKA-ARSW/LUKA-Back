@@ -6,7 +6,7 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import edu.arsw.luka.lukaBack.domain.Comprador;
-import edu.arsw.luka.lukaBack.domain.ElementoSubasta;
+
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -23,6 +23,7 @@ public class SalaEntidad {
       
     private String subasta;    
     private Collection<String> compradores;
-    private Collection<ElementoSubasta> elementoSubasta;
+    private Collection<ElementoSubastaEntidad> elementoSubasta;
+
     
 }

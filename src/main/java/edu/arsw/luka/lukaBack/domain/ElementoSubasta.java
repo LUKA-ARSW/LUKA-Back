@@ -1,5 +1,6 @@
 package edu.arsw.luka.lukaBack.domain;
 
+import java.util.Collection;
 import java.util.PriorityQueue;
 
 import org.springframework.data.util.Pair;
@@ -24,4 +25,12 @@ public class ElementoSubasta {
         (p1,p2) -> -p1.getSecond().compareTo(p2.getSecond())
     );
     
+    public void agregarComprador(Comprador comprador, Double puja) {
+        compradores.add(Pair.of(comprador, puja));
+    }
+
+    public void agregarComprador(Collection<Pair<Comprador,Double>> comprador) {
+        compradores.addAll(comprador);
+    }
+
 }
