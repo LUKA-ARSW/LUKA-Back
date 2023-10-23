@@ -69,5 +69,25 @@ public class SalaController {
         }
     }
 
+    @PostMapping(value = "/{nombre}/{correo}")
+      public ResponseEntity<?> agregarUsuario(@PathVariable("nombre") String nombre, @PathVariable("correo") String correo) {
+        try{
+            salaServicio.agregarUsuario(nombre,correo);
+            return ResponseEntity.status(200).body("El usuario: " + correo + " ha sido agregado a la sala");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @DeleteMapping(value = "/{nombre}/{correo}")
+    public ResponseEntity<?> eliminarUsuario(@PathVariable("nombre") String nombre, @PathVariable("correo") String correo) {
+        try{
+            salaServicio.eliminarUsuario(nombre,correo);
+            return ResponseEntity.status(200).body("El usuario: " + correo + " ha sido eliminado de la sala");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
     
 }

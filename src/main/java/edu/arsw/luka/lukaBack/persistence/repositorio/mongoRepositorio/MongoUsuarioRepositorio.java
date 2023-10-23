@@ -1,6 +1,7 @@
 package edu.arsw.luka.lukaBack.persistence.repositorio.mongoRepositorio;
 
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -59,6 +60,24 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
             usuarioEntidad.getContrasena()
         );
 
+    }
+
+    @Override
+    public Usuario consultarUsuarioPorCorreo(String correo) throws LukaException {
+        UsuarioEntidad usuarioEntidad = mongoUsuarioInterface.findById(correo).orElseThrow(() -> new LukaException("No existe el usuario"));
+
+        return new Usuario(
+            usuarioEntidad.getNombre(),
+            usuarioEntidad.getNombreUsuario(),
+            usuarioEntidad.getCorreo(),
+            usuarioEntidad.getTipoDocumento(),
+            usuarioEntidad.getNumDocumento(), 
+            usuarioEntidad.getContrasena()      
+        );
+    }
+
+    public boolean existeUsuario(String correo) throws LukaException {
+        return mongoUsuarioInterface.existsById(correo);
     }
     
 }

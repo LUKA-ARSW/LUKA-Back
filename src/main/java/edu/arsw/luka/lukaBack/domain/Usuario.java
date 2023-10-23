@@ -2,13 +2,15 @@ package edu.arsw.luka.lukaBack.domain;
 
 import lombok.NonNull;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
-@AllArgsConstructor
 @Getter
 @Setter
+@AllArgsConstructor
 public class Usuario {
     @NonNull
     private String nombre;

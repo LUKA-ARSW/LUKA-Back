@@ -23,6 +23,8 @@ public interface SubastaRepositorio {
 
     void eliminarProductoSubasta(String nombre, String idProducto) throws LukaException;
 
+    boolean existeProducto(String nombre, String idProducto) throws LukaException;
+
 
     
 }

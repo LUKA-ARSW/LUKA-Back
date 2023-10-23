@@ -27,12 +27,14 @@ public class MongoSalaRepositorio implements SalaRepositorio{
     private MongoSalaInterface mongoSalaInterface;
     private MongoSubastaRepositorio mongoSubastaRepositorio;
     private MongoProductoRepositorio mongoProductoRepositorio;
+    private MongoUsuarioRepositorio mongoUsuarioRepositorio;
 
     @Autowired
-    public MongoSalaRepositorio(MongoSalaInterface mongoSalaInterface,MongoSubastaRepositorio mongoSubastaRepositorio, MongoProductoRepositorio mongoProductoRepositorio) {
+    public MongoSalaRepositorio(MongoSalaInterface mongoSalaInterface,MongoSubastaRepositorio mongoSubastaRepositorio, MongoProductoRepositorio mongoProductoRepositorio, MongoUsuarioRepositorio  mongoUsuariorRepositorio) {
         this.mongoSalaInterface = mongoSalaInterface;
         this.mongoSubastaRepositorio = mongoSubastaRepositorio;
         this.mongoProductoRepositorio = mongoProductoRepositorio;
+        this.mongoUsuarioRepositorio = mongoUsuariorRepositorio;
     }
 
     @Override
@@ -97,6 +99,46 @@ public class MongoSalaRepositorio implements SalaRepositorio{
     public void eliminarSala(String nombre) throws LukaException {
         // TODO Auto-generated method stub
         throw new UnsupportedOperationException("Unimplemented method 'eliminarSala'");
+    }
+
+    @Override
+    public void agregarUsuario(String nombre, String correo) throws LukaException{
+        SalaEntidad salaEntidad = mongoSalaInterface.findById(nombre)
+                                .orElseThrow(() -> new LukaException("No se encontro la sala con el nombre: " + nombre));
+        if(mongoUsuarioRepositorio.existeUsuario(correo)){
+            if(existeComprador(nombre, correo)){
+                throw new LukaException("El usuario ya esta en la sala");
+            }
+            salaEntidad.getCompradores().add(correo);
+            mongoSalaInterface.save(salaEntidad);
+        }else{
+            throw new LukaException("No existe el usuario");
+        }
+
+    }
+
+    @Override
+    public void eliminarUsuario(String nombre, String correo) throws LukaException{
+        SalaEntidad salaEntidad = mongoSalaInterface.findById(nombre)
+                                .orElseThrow(() -> new LukaException("No se encontro la sala con el nombre: " + nombre));
+        if(mongoUsuarioRepositorio.existeUsuario(correo)){
+            if(!existeComprador(nombre, correo)){
+                throw new LukaException("El usuario no esta en la sala");
+            }
+            salaEntidad.getCompradores().remove(correo);
+            mongoSalaInterface.save(salaEntidad);
+        }else{
+            throw new LukaException("No existe el usuario");
+        }
+    }
+
+    @Override
+    public boolean existeComprador(String nombre, String correo) throws LukaException{
+        SalaEntidad salaEntidad = mongoSalaInterface.findById(nombre)
+                            .orElseThrow(() -> new LukaException("No se encontro la sala con el nombre: " + nombre));
+        return salaEntidad.getCompradores().contains(correo);
+
+
     }
     
 }
