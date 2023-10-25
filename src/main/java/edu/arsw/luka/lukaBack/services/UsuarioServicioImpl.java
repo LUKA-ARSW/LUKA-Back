@@ -23,5 +23,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     public Usuario login(String correo, String contrasena) throws LukaException, LukaLoginException {
         return usuarioRepositorio.login(correo, contrasena);
     }
+
+    @Override
+    public Usuario consultarUsuarioPorCorreo(String correo) throws LukaException {
+        return usuarioRepositorio.consultarUsuarioPorCorreo(correo);
+    }
+    
     
 }

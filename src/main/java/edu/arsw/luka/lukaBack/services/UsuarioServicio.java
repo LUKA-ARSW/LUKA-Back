@@ -11,5 +11,6 @@ public interface UsuarioServicio {
 
     Usuario crearUsuario(Usuario usuario) throws LukaException;
     Usuario login(String correo, String contrasena) throws LukaException, LukaLoginException;
+    Usuario consultarUsuarioPorCorreo(String correo) throws LukaException;
     
 }
