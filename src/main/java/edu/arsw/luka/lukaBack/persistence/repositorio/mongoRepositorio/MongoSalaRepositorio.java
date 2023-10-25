@@ -2,6 +2,7 @@ package edu.arsw.luka.lukaBack.persistence.repositorio.mongoRepositorio;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.stream.Collectors;
 
@@ -79,7 +80,7 @@ public class MongoSalaRepositorio implements SalaRepositorio{
                         .producto(mongoProductoRepositorio.consultarProductoPorIdProducto(elementoSubastaEntidad.getIdProducto()))
                         .pujaMaxima(elementoSubastaEntidad.getPujaMaxima())
                         .build();
-                    result.agregarComprador(elementoSubastaEntidad.getCompradores());
+                    result.inicializarElementoSubasta(elementoSubastaEntidad.getCompradores());
                     elementoSubasta.add(result);
                 } catch (LukaException e) {                    
                 }
@@ -138,6 +139,14 @@ public class MongoSalaRepositorio implements SalaRepositorio{
                             .orElseThrow(() -> new LukaException("No se encontro la sala con el nombre: " + nombre));
         return salaEntidad.getCompradores().contains(correo);
 
+
+    }
+
+    @Override
+    public void pujarPorProducto(String nombre, double cantidadAPujar, String comprador, String idProducto) throws LukaException {
+        var sala = consultarSalaPorNombre(nombre);
+        //sala.pujarPorProducto(cantidadAPujar, comprador, idProducto);
+        agregarSala(sala);
 
     }
     

@@ -1,6 +1,7 @@
 package edu.arsw.luka.lukaBack.persistence.repositorio;
 
 import java.util.List;
+import java.util.Map;
 
 import edu.arsw.luka.lukaBack.domain.Sala;
 import edu.arsw.luka.lukaBack.exception.LukaException;
@@ -20,5 +21,7 @@ public interface SalaRepositorio {
     void eliminarUsuario(String nombre,String correo) throws LukaException;
 
     boolean existeComprador(String nombre, String correo) throws LukaException;
+    
+    void pujarPorProducto(String nombre, double cantidadAPujar, String comprador, String idProducto) throws LukaException;
     
 }

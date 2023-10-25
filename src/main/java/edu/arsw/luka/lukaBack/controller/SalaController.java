@@ -1,9 +1,12 @@
 package edu.arsw.luka.lukaBack.controller;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -88,6 +91,20 @@ public class SalaController {
             return ResponseEntity.status(500).body(e.getMessage());
         }
     }
+
+    @PatchMapping(value="/{nombre}")
+    public ResponseEntity<?> pujarPorProducto(@PathVariable("nombre") String nombre, @RequestBody Map<String, String> parametros) {
+        try{
+            double cantidadAPujar = Double.valueOf(parametros.get("cantidadAPujar"));
+            String comprador = parametros.get("comprador");
+            String idProducto = parametros.get("idProducto");
+            salaServicio.pujarPorProducto(nombre, cantidadAPujar, comprador, idProducto);
+            return ResponseEntity.status(200).body("Puja realizada");
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
 
     
 }

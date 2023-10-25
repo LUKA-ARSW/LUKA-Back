@@ -7,6 +7,7 @@ import org.springframework.data.util.Pair;
 
 import com.mongodb.lang.NonNull;
 
+import edu.arsw.luka.lukaBack.exception.LukaException;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Builder.Default;
@@ -25,12 +26,15 @@ public class ElementoSubasta {
         (p1,p2) -> p1.getSecond().compareTo(p2.getSecond())>0?-1:1
     );
     
-    public void agregarComprador(Comprador comprador, Double puja) {
+    public void realizarPuja(Comprador comprador, Double puja) throws LukaException {
+        if(puja <= pujaMaxima){ throw new LukaException("La puja es menor a la puja maxima");}
         compradores.add(Pair.of(comprador, puja));
     }
 
-    public void agregarComprador(Collection<Pair<Comprador,Double>> comprador) {
+    public void inicializarElementoSubasta(Collection<Pair<Comprador,Double>> comprador) {
         compradores.addAll(comprador);
     }
+
+
 
 }
