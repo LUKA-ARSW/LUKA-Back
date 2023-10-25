@@ -141,6 +141,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
 
     @Override
     public void agregarProductoSubasta(String nombre, Producto producto) throws LukaException {
+        if(existeProducto(nombre, producto.getIdProducto())){
+            throw new LukaException("El producto ya existe en la subasta");
+        }
         Subasta subasta =consultarSubastaPorNombre(nombre);
         subasta.agregarProducto(producto);
         agregarSubasta(subasta);
@@ -153,6 +156,14 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
         subasta.eliminarProducto(idProducto);
         agregarSubasta(subasta);
         
+    }
+
+    @Override
+    public boolean existeProducto(String nombre, String idProducto) throws LukaException {
+        SubastaEntidad subastaEntidad = mongoSubastaInterface.findById(nombre)
+                                        .orElseThrow(() -> new LukaException("No existe la subasta"));
+        return subastaEntidad.getProductos().stream().anyMatch(producto -> producto.getIdProducto().equals(idProducto));       
+       
     }
 
     

@@ -34,5 +34,17 @@ public class SalaServicioImpl implements SalaServicio{
     public void eliminarSala(String nombre) throws LukaException {
         salaRepositorio.eliminarSala(nombre);
     }
+
+    @Override
+    public void agregarUsuario(String nombre, String correo) throws LukaException {
+        salaRepositorio.agregarUsuario(nombre,correo);
+       
+    }
+
+    @Override
+    public void eliminarUsuario(String nombre, String correo) throws LukaException {
+        salaRepositorio.eliminarUsuario(nombre,correo);
+        
+    }
     
 }

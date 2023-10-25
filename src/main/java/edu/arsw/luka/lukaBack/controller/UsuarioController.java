@@ -4,6 +4,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,6 +46,16 @@ public class UsuarioController {
             return ResponseEntity.status(201).body(result);
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/{correo}")
+    public ResponseEntity<?> getUsuarioporcorreo(@PathVariable(required =true, value ="correo") String correo) {
+        try{
+            var result= usuarioServicio.consultarUsuarioPorCorreo(correo);
+            return ResponseEntity.status(200).body(result);
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
         }
     }
 
