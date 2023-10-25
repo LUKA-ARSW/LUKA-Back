@@ -38,7 +38,7 @@ public class Subasta {
     public boolean eliminarProducto(String idProducto) {
         Producto productoEliminar = productos.stream()
                     .filter(producto -> producto.getIdProducto().equals(idProducto))
-                    .findFirst().get();
+                    .findFirst().orElse(null);
         return eliminarProducto(productoEliminar);
     }
 }
