@@ -22,7 +22,7 @@ public class ElementoSubasta {
 
     @Default
     private PriorityQueue<Pair<Comprador,Double>> compradores = new PriorityQueue<>(
-        (p1,p2) -> -p1.getSecond().compareTo(p2.getSecond())
+        (p1,p2) -> p1.getSecond().compareTo(p2.getSecond())>0?-1:1
     );
     
     public void agregarComprador(Comprador comprador, Double puja) {
