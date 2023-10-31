@@ -29,7 +29,5 @@ public class Usuario {
 
     @NonNull
     private String contrasena;
-
-
     
 }

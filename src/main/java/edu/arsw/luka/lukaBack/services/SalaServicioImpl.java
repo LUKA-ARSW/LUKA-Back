@@ -1,6 +1,7 @@
 package edu.arsw.luka.lukaBack.services;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +46,12 @@ public class SalaServicioImpl implements SalaServicio{
     public void eliminarUsuario(String nombre, String correo) throws LukaException {
         salaRepositorio.eliminarUsuario(nombre,correo);
         
+    }
+
+    @Override
+    public void pujarPorProducto(String nombre, double cantidadAPujar, String comprador, String idProducto) throws LukaException {
+        if(!salaRepositorio.existeComprador(nombre, comprador)){ throw new LukaException("El comprador no existe");}
+        salaRepositorio.pujarPorProducto(nombre,cantidadAPujar, comprador, idProducto);
     }
     
 }

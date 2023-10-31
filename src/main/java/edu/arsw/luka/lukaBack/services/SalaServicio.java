@@ -1,7 +1,10 @@
 package edu.arsw.luka.lukaBack.services;
 
 import java.util.List;
+import java.util.Map;
 
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import edu.arsw.luka.lukaBack.domain.Sala;
 import edu.arsw.luka.lukaBack.exception.LukaException;
@@ -18,6 +21,8 @@ public interface SalaServicio {
     void agregarUsuario(String nombre,String correo) throws LukaException;
 
     void eliminarUsuario(String nombre,String correo) throws LukaException;
+
+    void pujarPorProducto(String nombre, double cantidadAPujar, String comprador, String idProducto) throws LukaException;
 
     
 }

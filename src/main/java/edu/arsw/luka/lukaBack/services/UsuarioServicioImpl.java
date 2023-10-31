@@ -3,6 +3,7 @@ package edu.arsw.luka.lukaBack.services;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.arsw.luka.lukaBack.domain.Comprador;
 import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 import edu.arsw.luka.lukaBack.exception.LukaLoginException;
@@ -27,6 +28,11 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     @Override
     public Usuario consultarUsuarioPorCorreo(String correo) throws LukaException {
         return usuarioRepositorio.consultarUsuarioPorCorreo(correo);
+    }
+
+    @Override
+    public Comprador crearComprador(Comprador comprador) throws LukaException {
+        return usuarioRepositorio.crearComprador(comprador);
     }
     
     
