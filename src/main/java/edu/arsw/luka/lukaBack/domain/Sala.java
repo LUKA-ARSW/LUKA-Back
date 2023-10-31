@@ -37,10 +37,27 @@ public class Sala {
             throw new LukaException("No tiene fondos suficientes");
         }
         
+        boolean existeElemento = false;
+        
         for(ElementoSubasta elemento: elementoSubasta){
             if(elemento.getProducto().getIdProducto().equals(idProducto)){
                 elemento.realizarPuja(comprador, cantidadAPujar);
+                existeElemento = true;
             }
         }
+
+        if(!existeElemento){
+            if(!subasta.existeProducto(idProducto)){
+                throw new LukaException("El producto no existe");
+            }
+            Producto producto = subasta.getProducto(idProducto);
+            ElementoSubasta elemento = ElementoSubasta.builder()
+                .producto(producto)
+                .pujaMaxima(producto.getPrecio())
+                .build();
+            elemento.realizarPuja(comprador, cantidadAPujar);
+            elementoSubasta.add(elemento);
+        }
     }
+
 }

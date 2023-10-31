@@ -2,16 +2,21 @@ package edu.arsw.luka.lukaBack.domain;
 
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.NonNull;
 
 import edu.arsw.luka.lukaBack.exception.LukaException;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public class CuentaBancaria {
 
     @NonNull
+    @JsonProperty("numeroCuenta")
     private String numeroCuenta;
 
     @NonNull
+    @JsonProperty("cantidadCredito")
     private BigDecimal cantidadCredito;
 
     public CuentaBancaria(String numeroCuenta) {
@@ -31,6 +36,10 @@ public class CuentaBancaria {
     public BigDecimal quitarFondos(BigDecimal cantidad){
         this.cantidadCredito = this.cantidadCredito.subtract(cantidad);
         return cantidadCredito;
+    }
+
+    public BigDecimal quitarFondos(double cantidad){
+        return this.quitarFondos(BigDecimal.valueOf(cantidad));
     }
 
     public void transferirFondos(CuentaBancaria cuentaDestino, BigDecimal cantidad) throws LukaException{

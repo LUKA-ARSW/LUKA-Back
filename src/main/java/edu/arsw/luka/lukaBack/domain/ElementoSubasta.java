@@ -29,6 +29,7 @@ public class ElementoSubasta {
     public void realizarPuja(Comprador comprador, Double puja) throws LukaException {
         if(puja <= pujaMaxima){ throw new LukaException("La puja es menor a la puja maxima");}
         compradores.add(Pair.of(comprador, puja));
+        pujaMaxima = puja;
     }
 
     public void inicializarElementoSubasta(Collection<Pair<Comprador,Double>> comprador) {

@@ -9,10 +9,12 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@ToString
 public class Subasta {
 
     @NonNull
@@ -40,5 +42,16 @@ public class Subasta {
                     .filter(producto -> producto.getIdProducto().equals(idProducto))
                     .findFirst().orElse(null);
         return eliminarProducto(productoEliminar);
+    }
+
+    public boolean existeProducto(String idProducto) {
+        return productos.stream()
+                    .anyMatch(producto -> producto.getIdProducto().equals(idProducto));
+    }
+
+    public Producto getProducto(String idProducto) {
+        return productos.stream()
+                    .filter(producto -> producto.getIdProducto().equals(idProducto))
+                    .findFirst().orElse(null);
     }
 }

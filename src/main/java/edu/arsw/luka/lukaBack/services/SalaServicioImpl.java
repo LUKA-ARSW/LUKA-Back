@@ -50,6 +50,7 @@ public class SalaServicioImpl implements SalaServicio{
 
     @Override
     public void pujarPorProducto(String nombre, double cantidadAPujar, String comprador, String idProducto) throws LukaException {
+        if(!salaRepositorio.existeComprador(nombre, comprador)){ throw new LukaException("El comprador no existe");}
         salaRepositorio.pujarPorProducto(nombre,cantidadAPujar, comprador, idProducto);
     }
     

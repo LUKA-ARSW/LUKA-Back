@@ -145,7 +145,10 @@ public class MongoSalaRepositorio implements SalaRepositorio{
     @Override
     public void pujarPorProducto(String nombre, double cantidadAPujar, String comprador, String idProducto) throws LukaException {
         var sala = consultarSalaPorNombre(nombre);
-        //sala.pujarPorProducto(cantidadAPujar, comprador, idProducto);
+        var compradorRepo = mongoUsuarioRepositorio.getCompradorPorId(comprador);
+        sala.pujarPorProducto(cantidadAPujar, compradorRepo, idProducto);
+        compradorRepo.getCuentaBancaria().quitarFondos(cantidadAPujar);
+        mongoUsuarioRepositorio.crearComprador(compradorRepo);
         agregarSala(sala);
 
     }

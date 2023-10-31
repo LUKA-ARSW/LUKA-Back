@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import edu.arsw.luka.lukaBack.domain.Comprador;
 import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.domain.entity.UsuarioEntidad;
 import edu.arsw.luka.lukaBack.exception.LukaException;
@@ -78,6 +79,43 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
 
     public boolean existeUsuario(String correo) throws LukaException {
         return mongoUsuarioInterface.existsById(correo);
+    }
+
+    public Comprador getCompradorPorId(String correo) throws LukaException {
+        UsuarioEntidad usuarioEntidad = mongoUsuarioInterface.findById(correo).orElseThrow(() -> new LukaException("No existe el usuario"));
+        return new Comprador(
+            usuarioEntidad.getNombre(),
+            usuarioEntidad.getNombreUsuario(),
+            usuarioEntidad.getCorreo(),
+            usuarioEntidad.getTipoDocumento(),
+            usuarioEntidad.getNumDocumento(), 
+            usuarioEntidad.getContrasena(),
+            usuarioEntidad.getCuentaBancaria()     
+        );
+
+    }
+
+    public Comprador crearComprador(Comprador comprador) throws LukaException{
+        UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
+        usuarioEntidad.setNombre(comprador.getNombre());
+        usuarioEntidad.setNombreUsuario(comprador.getNombreUsuario());
+        usuarioEntidad.setCorreo(comprador.getCorreo());
+        usuarioEntidad.setTipoDocumento(comprador.getTipoDocumento());
+        usuarioEntidad.setNumDocumento(comprador.getNumDocumento());
+        usuarioEntidad.setContrasena(comprador.getContrasena());
+        usuarioEntidad.setCuentaBancaria(comprador.getCuentaBancaria());
+
+        UsuarioEntidad usuarioResult = mongoUsuarioInterface.save(usuarioEntidad);
+
+        return new Comprador(
+            usuarioResult.getNombre(),
+            usuarioResult.getNombreUsuario(),
+            usuarioResult.getCorreo(),
+            usuarioResult.getTipoDocumento(),
+            usuarioResult.getNumDocumento(),
+            usuarioResult.getContrasena(),
+            usuarioResult.getCuentaBancaria()
+        );
     }
     
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.arsw.luka.lukaBack.domain.Comprador;
 import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.services.SubastaServicio;
 import edu.arsw.luka.lukaBack.services.UsuarioServicio;
@@ -59,6 +60,16 @@ public class UsuarioController {
         }
     }
 
+
+    @PostMapping(value = "/comprador")
+    public ResponseEntity<?> crearComprador(@RequestBody Comprador comprador) {
+        try{
+            usuarioServicio.crearComprador(comprador);
+            return ResponseEntity.status(201).body("Comprador :" + comprador.getNombre() +" creado");
+        }catch(Exception e){
+            return ResponseEntity.status(403).body(e.getMessage());
+        }
+    }
 
     
 }
