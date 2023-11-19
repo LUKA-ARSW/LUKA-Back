@@ -1,0 +1,13 @@
+# Ignorar archivos y directorios generados por el sistema operativo
+.DS_Store
+Thumbs.db
+
+# Ignorar archivos y directorios de Maven
+.mvn/
+mvnw
+mvnw.cmd
+
+.vscode/
+.circleci/
+.git/
+.gitignore
