@@ -21,7 +21,7 @@ import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
 import edu.arsw.luka.lukaBack.domain.TipoSubasta;
 import edu.arsw.luka.lukaBack.services.SubastaServicio;
-import lombok.experimental.var;
+
 
 @RestController
 @RequestMapping(value = "/subasta")
@@ -64,7 +64,7 @@ public class SubastaController {
         }
     }
 
-    @GetMapping(value="/tipo/{tipo}}")
+    @GetMapping(value="/tipo/{tipo}")
     public ResponseEntity<?> getSubastaPorTipo(@PathVariable(required =true, value ="tipo") TipoSubasta tipo) {
         try{
             var result= subastaServicio.consultarSubastaPorTipo(tipo);
