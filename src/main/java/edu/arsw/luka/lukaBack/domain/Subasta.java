@@ -24,7 +24,10 @@ public class Subasta {
     private LocalDateTime fechaFin;
 
     @NonNull
-    private Estado estado;
+    private TipoSubasta tipoSubasta;
+
+    @NonNull
+    private Estado estado; 
 
     @Setter(value = AccessLevel.NONE)
     private Collection<Producto> productos;
@@ -54,4 +57,6 @@ public class Subasta {
                     .filter(producto -> producto.getIdProducto().equals(idProducto))
                     .findFirst().orElse(null);
     }
+
+    
 }

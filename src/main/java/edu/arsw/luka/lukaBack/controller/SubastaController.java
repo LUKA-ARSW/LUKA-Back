@@ -19,7 +19,9 @@ import org.springframework.web.bind.annotation.RestController;
 import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
+import edu.arsw.luka.lukaBack.domain.TipoSubasta;
 import edu.arsw.luka.lukaBack.services.SubastaServicio;
+import lombok.experimental.var;
 
 @RestController
 @RequestMapping(value = "/subasta")
@@ -62,10 +64,26 @@ public class SubastaController {
         }
     }
 
-    @PatchMapping(value = "/{nombre}/fecha")
-    public ResponseEntity<?> modificarFechaSubasta(@PathVariable("nombre") String nombre,@RequestParam(required = false, value="fechaInicio") LocalDateTime fechaInicio, @RequestParam(required = false, value="fechaFin") LocalDateTime fechaFin) {
+    @GetMapping(value="/tipo/{tipo}}")
+    public ResponseEntity<?> getSubastaPorTipo(@PathVariable(required =true, value ="tipo") TipoSubasta tipo) {
         try{
-            subastaServicio.modificarFechaSubasta(nombre, fechaInicio, fechaFin);
+            var result= subastaServicio.consultarSubastaPorTipo(tipo);
+            return ResponseEntity.status(200).body(result);
+
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @PatchMapping(value = "/{nombre}/fecha")
+    public ResponseEntity<?> modificarFechaSubasta(
+        @PathVariable("nombre") String nombre,
+        @RequestParam(required = false, value="fechaInicio") LocalDateTime fechaInicio, 
+        @RequestParam(required = false, value="fechaFin") LocalDateTime fechaFin, 
+        @RequestParam(required = false, value="cambiarTipo") Boolean cambiarTipo
+    ) {
+        try{
+            subastaServicio.modificarFechaSubasta(nombre, fechaInicio, fechaFin, cambiarTipo.booleanValue());
             return ResponseEntity.status(201).body("Fechas de la subasta actualizadas");
         }catch(Exception e){
             return ResponseEntity.status(403).body(e.getMessage());
