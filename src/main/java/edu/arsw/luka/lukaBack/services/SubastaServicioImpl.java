@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
+import edu.arsw.luka.lukaBack.domain.TipoSubasta;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 import edu.arsw.luka.lukaBack.persistence.repositorio.SubastaRepositorio;
 
@@ -20,13 +21,15 @@ public class SubastaServicioImpl implements SubastaServicio {
 
     @Override
     public Subasta agregarSubasta(Subasta subasta) throws LukaException{
+        if (!subasta.getTipoSubasta().fechasCoinciden(subasta.getFechaInicio(), subasta.getFechaFin())) {
+            throw new LukaException("Las fechas no coinciden con el tipo de subasta");
+        }
         return subastaRepositorio.agregarSubasta(subasta);
 
     }
 
     @Override
-    public Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin) throws LukaException{
-
+    public Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean cambiarTipo) throws LukaException{
         if(fechaInicio!=null && fechaInicio.isAfter(fechaFin)){
             throw new LukaException("La fecha de inicio no puede ser posterior a la fecha de fin");
         }
@@ -34,14 +37,23 @@ public class SubastaServicioImpl implements SubastaServicio {
         if(fechaFin!=null && fechaFin.isBefore(fechaInicio)){
             throw new LukaException("La fecha de fin no puede ser anterior a la fecha de inicio");
         }
-        return subastaRepositorio.modificarFechaSubasta(nombre,fechaInicio, fechaFin);
+
+        return subastaRepositorio.modificarFechaSubasta(nombre,fechaInicio, fechaFin,cambiarTipo);
         
     }
-
 
     @Override
     public List<Subasta> consultarTodasLasSubastas() {
         return subastaRepositorio.consultarTodasLasSubastas();
+        
+    }
+
+    @Override
+    public List<Subasta> consultarSubastaPorTipo(TipoSubasta tipoSubasta) throws LukaException{
+        return this.consultarTodasLasSubastas()
+            .stream()
+            .filter(subasta -> subasta.getTipoSubasta().equals(tipoSubasta))
+            .toList();       
         
     }
 

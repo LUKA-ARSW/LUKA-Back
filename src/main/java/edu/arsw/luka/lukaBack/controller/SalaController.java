@@ -11,8 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 
+import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Sala;
 import edu.arsw.luka.lukaBack.domain.Subasta;
 import edu.arsw.luka.lukaBack.services.SalaServicio;
@@ -54,6 +57,20 @@ public class SalaController {
     public ResponseEntity<?> getSalaPorNombre(@PathVariable(required =true, value ="nombre") String nombre) {  
         try{
             var result= salaServicio.consultarSalaPorNombre(nombre);
+            return ResponseEntity.status(200).body(result);
+
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/comprador/{comprador}")
+    public ResponseEntity<?> getSubastasPorUsuario(
+        @PathVariable(required =true, value ="comprador") String comprador,
+        @RequestParam(required =true, value ="estado") Estado estado
+    ) {  
+        try{
+            var result= salaServicio.consultarSubastasPorUsuario(comprador,estado);
             return ResponseEntity.status(200).body(result);
 
         }catch(Exception e){
