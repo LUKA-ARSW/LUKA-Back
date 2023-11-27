@@ -60,10 +60,18 @@ public class MongoSalaRepositorio implements SalaRepositorio{
         
     }
 
+
     @Override
     public List<Sala> consultarTodasLasSalas() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'consultarTodasLasSalas'");
+        return mongoSalaInterface.findAll().parallelStream().map(sala ->
+            {
+                try {
+                    return this.consultarSalaPorNombre(sala.getNombre());
+                } catch (LukaException e) {
+                    return null;
+                }
+            }
+        ).toList();
     }
 
     @Override
