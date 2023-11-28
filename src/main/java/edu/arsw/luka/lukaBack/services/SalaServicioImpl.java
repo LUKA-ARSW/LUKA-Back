@@ -69,7 +69,14 @@ public class SalaServicioImpl implements SalaServicio{
 
         return subastasPorComprador
             .map(Sala::getSubasta)
-            .toList();        
+            .toList();       
+    }
 
+    @Override
+    public Sala consultarSalasPorSubasta(String nombreSubasta) throws LukaException{
+        return this.consultarTodasLasSalas().stream()
+            .filter(sala -> sala.getSubasta().getNombre().equals(nombreSubasta))
+            .findFirst()
+            .orElseThrow(() -> new LukaException("No se encontro la sala con la subasta: " + nombreSubasta));
     }
 }

@@ -28,6 +28,9 @@ public interface SalaServicio {
     
     List<Subasta> consultarSubastasPorUsuario(String comprador, Estado estado);
 
+    Sala consultarSalasPorSubasta(String nombreSubasta) throws LukaException;
+
+
 
 
     

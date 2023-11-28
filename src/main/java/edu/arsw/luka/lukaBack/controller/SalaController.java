@@ -2,6 +2,7 @@ package edu.arsw.luka.lukaBack.controller;
 
 import java.util.Map;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -78,6 +79,16 @@ public class SalaController {
         }
     }
 
+    @GetMapping("/subasta/{nombreSubasta}")
+    public ResponseEntity<?> getSalasPorSubasta(@PathVariable(required =true, value ="nombreSubasta") String nombreSubasta) {  
+        try{
+            var result= salaServicio.consultarSalasPorSubasta(nombreSubasta);
+            return ResponseEntity.status(200).body(result);
+
+        }catch(Exception e){
+            return ResponseEntity.status(500).body(e.getMessage());
+        }
+    }
     
     @DeleteMapping(value = "/{nombre}")
     public ResponseEntity<?> eliminarSala(@PathVariable("nombre") String nombre) {
