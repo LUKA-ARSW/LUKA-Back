@@ -1,13 +1,18 @@
 package edu.arsw.luka.lukaBack.services;
 
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import edu.arsw.luka.lukaBack.domain.Comprador;
+import edu.arsw.luka.lukaBack.domain.Rol;
+import edu.arsw.luka.lukaBack.domain.TipoDocumento;
 import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 import edu.arsw.luka.lukaBack.exception.LukaLoginException;
 import edu.arsw.luka.lukaBack.persistence.repositorio.UsuarioRepositorio;
+import edu.arsw.luka.lukaBack.util.WebToken;
 
 @Service
 public class UsuarioServicioImpl implements UsuarioServicio {
@@ -16,13 +21,28 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     private UsuarioRepositorio usuarioRepositorio;
 
     @Override
-    public Usuario crearUsuario(Usuario usuario) throws LukaException {
-        return usuarioRepositorio.crearUsuario(usuario);
+    public Usuario crearUsuario(Map<String,String> usuario) throws LukaException {
+        var rol = Rol.valueOf(usuario.get("rol"));
+        var tipoDocumento = TipoDocumento.valueOf(usuario.get("tipoDocumento"));
+        var nuevoUsuario = new Usuario(
+            usuario.get("nombre"),
+            usuario.get("nombreUsuario"),
+            usuario.get("correo"),
+            tipoDocumento,
+            usuario.get("numDocumento"),
+            usuario.get("contrasena"),
+            rol
+        );
+        return usuarioRepositorio.crearUsuario(nuevoUsuario);
     }
 
     @Override
-    public Usuario login(String correo, String contrasena) throws LukaException, LukaLoginException {
-        return usuarioRepositorio.login(correo, contrasena);
+    public WebToken login(String correo, String contrasena) throws LukaException, LukaLoginException {
+        var result = usuarioRepositorio.login(correo, contrasena);
+        WebToken token = new WebToken();
+        token.parseToken(result.getFirst());
+        token.parseToken(result.getSecond());
+        return token;
     }
 
     @Override
