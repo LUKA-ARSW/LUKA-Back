@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import edu.arsw.luka.lukaBack.domain.Comprador;
 import edu.arsw.luka.lukaBack.domain.Usuario;
+import edu.arsw.luka.lukaBack.exception.LukaLoginException;
 import edu.arsw.luka.lukaBack.services.SubastaServicio;
 import edu.arsw.luka.lukaBack.services.UsuarioServicio;
 
@@ -45,8 +46,11 @@ public class UsuarioController {
             String contrasena = inicioSesion.get("contrasena");            
             var result = usuarioServicio.login(correo, contrasena);
             return ResponseEntity.status(201).body(result.toString());
-        }catch(Exception e){
-            return ResponseEntity.status(403).body(e.getMessage());
+        }catch(LukaLoginException e){
+            return ResponseEntity.status(403).body("Error de loggin");
+        }catch(Exception ex){
+            return ResponseEntity.status(500).body(ex.getMessage());
+
         }
     }
 

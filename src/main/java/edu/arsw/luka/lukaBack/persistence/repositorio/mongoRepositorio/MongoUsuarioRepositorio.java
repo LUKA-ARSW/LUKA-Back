@@ -27,7 +27,12 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
     }
 
     @Override
-    public Usuario crearUsuario(Usuario usuario) throws LukaException {
+    public Usuario crearUsuario(Usuario usuario) throws LukaException{
+        return this.crearUsuario(usuario, usuario.getNumDocumento());
+    }
+
+    @Override
+    public Usuario crearUsuario(Usuario usuario, String numeroCuenta) throws LukaException {
         UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
         usuarioEntidad.setNombre(usuario.getNombre());
         usuarioEntidad.setNombreUsuario(usuario.getNombreUsuario());
@@ -38,7 +43,7 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
         usuarioEntidad.setRol(usuario.getRol());
 
         if (!usuarioEntidad.getRol().equals(Rol.ADMINISTRADOR)) {
-            usuarioEntidad.setCuentaBancaria(new CuentaBancaria(usuario.getNumDocumento()));
+            usuarioEntidad.setCuentaBancaria(new CuentaBancaria(numeroCuenta));
         }
 
         UsuarioEntidad usuarioResult = mongoUsuarioInterface.save(usuarioEntidad);

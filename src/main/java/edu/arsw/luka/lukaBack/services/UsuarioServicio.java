@@ -8,12 +8,13 @@ import edu.arsw.luka.lukaBack.domain.Comprador;
 import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 import edu.arsw.luka.lukaBack.exception.LukaLoginException;
-import edu.arsw.luka.lukaBack.util.WebToken;
+import edu.arsw.luka.lukaBack.util.JsonWebToken;
+
 
 public interface UsuarioServicio {
 
     Usuario crearUsuario (Map<String,String> usuario) throws LukaException;
-    WebToken login(String correo, String contrasena) throws LukaException, LukaLoginException;
+    String login(String correo, String contrasena) throws LukaException, LukaLoginException;
     Usuario consultarUsuarioPorCorreo(String correo) throws LukaException;
     Comprador crearComprador(Comprador comprador) throws LukaException;
     

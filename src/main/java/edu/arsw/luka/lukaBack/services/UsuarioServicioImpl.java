@@ -12,6 +12,7 @@ import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 import edu.arsw.luka.lukaBack.exception.LukaLoginException;
 import edu.arsw.luka.lukaBack.persistence.repositorio.UsuarioRepositorio;
+import edu.arsw.luka.lukaBack.util.JsonWebToken;
 import edu.arsw.luka.lukaBack.util.WebToken;
 
 @Service
@@ -19,6 +20,9 @@ public class UsuarioServicioImpl implements UsuarioServicio {
 
     @Autowired
     private UsuarioRepositorio usuarioRepositorio;
+
+    @Autowired
+    private AutorizacionServicio autorizacionServicio;
 
     @Override
     public Usuario crearUsuario(Map<String,String> usuario) throws LukaException {
@@ -37,12 +41,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
-    public WebToken login(String correo, String contrasena) throws LukaException, LukaLoginException {
+    public String login(String correo, String contrasena) throws LukaException, LukaLoginException {
         var result = usuarioRepositorio.login(correo, contrasena);
         WebToken token = new WebToken();
         token.parseToken(result.getFirst());
-        token.parseToken(result.getSecond());
-        return token;
+        token.parseToken(result.getSecond());        
+        return autorizacionServicio.crearToken(token);
     }
 
     @Override
