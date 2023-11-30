@@ -6,12 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.mongodb.lang.NonNull;
 
 import edu.arsw.luka.lukaBack.exception.LukaException;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 public class CuentaBancaria {
 
     @NonNull
+    @Getter
     @JsonProperty("numeroCuenta")
     private String numeroCuenta;
 
