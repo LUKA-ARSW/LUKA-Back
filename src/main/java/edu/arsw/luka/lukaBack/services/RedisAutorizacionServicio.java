@@ -1,7 +1,11 @@
 package edu.arsw.luka.lukaBack.services;
 
+import java.sql.Date;
+import java.time.LocalDate;
+
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.resource.OAuth2ResourceServerProperties.Jwt;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 
@@ -23,16 +27,28 @@ public class RedisAutorizacionServicio implements AutorizacionServicio{
 
     @Override
     public boolean autorizar(String token) throws LukaNoAutorizadoException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'autorizar'");
-    }
+        String [] tokeDecodificado = jsonWebToken.decodificarToken(token);
+        JSONObject jsonObject = new JSONObject(tokeDecodificado[1]);
+        String tokenRedis = redisTemplate.opsForValue().get(jsonObject.getString("correo"));
+
+        if(tokenRedis == null || !tokenRedis.equals(token)){
+            throw new LukaNoAutorizadoException("No autorizado");
+        }
+
+        Long fechaExpiracion = Long.valueOf(jsonObject.getLong("exp"));
+        if(fechaExpiracion.compareTo(System.currentTimeMillis()/1000) < 0){
+            throw new LukaNoAutorizadoException("Token expirado");
+        }
+        return true;
+    }        
+    
 
     @Override
     public String crearToken(WebToken webToken) {
-        var token = jsonWebToken.createToken(webToken);
+        String token = jsonWebToken.createToken(webToken);        
         JSONObject jsonObject = new JSONObject(webToken.toString());
         redisTemplate.opsForValue().set(jsonObject.getString("correo"),token);
-        return jsonWebToken.createToken(webToken);
+        return token;
     }
     
 }

@@ -34,7 +34,6 @@ public class WebToken {
 
     @Override
     public String toString(){
-        System.out.println(raiz.toString());
         return raiz.toString();
     }
     
