@@ -50,5 +50,12 @@ public class RedisAutorizacionServicio implements AutorizacionServicio{
         redisTemplate.opsForValue().set(jsonObject.getString("correo"),token);
         return token;
     }
+
+    @Override
+    public void logout(String token) throws LukaNoAutorizadoException {
+        String [] tokeDecodificado = jsonWebToken.decodificarToken(token);
+        JSONObject jsonObject = new JSONObject(tokeDecodificado[1]);
+        redisTemplate.delete(jsonObject.getString("correo"));
+    }
     
 }

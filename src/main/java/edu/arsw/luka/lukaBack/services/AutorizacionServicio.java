@@ -10,4 +10,6 @@ public interface AutorizacionServicio {
     public boolean autorizar(String token) throws LukaNoAutorizadoException;
     
     public String crearToken(WebToken webToken);
+
+    public void logout(String token) throws LukaNoAutorizadoException;
 }
