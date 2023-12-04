@@ -50,6 +50,12 @@ public class UsuarioServicioImpl implements UsuarioServicio {
     }
 
     @Override
+    public String logout(String token) throws LukaException {
+        autorizacionServicio.logout(token);        
+        return "Deslogueo exitoso";
+    }
+
+    @Override
     public Usuario consultarUsuarioPorCorreo(String correo) throws LukaException {
         return usuarioRepositorio.consultarUsuarioPorCorreo(correo);
     }
