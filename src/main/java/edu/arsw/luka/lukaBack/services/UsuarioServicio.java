@@ -15,6 +15,7 @@ public interface UsuarioServicio {
 
     Usuario crearUsuario (Map<String,String> usuario) throws LukaException;
     String login(String correo, String contrasena) throws LukaException, LukaLoginException;
+    String logout(String token) throws LukaException;
     Usuario consultarUsuarioPorCorreo(String correo) throws LukaException;
     Comprador crearComprador(Comprador comprador) throws LukaException;
     
