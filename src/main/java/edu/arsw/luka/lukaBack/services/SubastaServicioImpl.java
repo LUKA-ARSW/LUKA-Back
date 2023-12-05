@@ -2,6 +2,7 @@ package edu.arsw.luka.lukaBack.services;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,6 +19,9 @@ public class SubastaServicioImpl implements SubastaServicio {
 
     @Autowired
     private SubastaRepositorio subastaRepositorio;
+
+    @Autowired
+    private ProductoServicio productoServicio;
 
     @Override
     public Subasta agregarSubasta(Subasta subasta) throws LukaException{
@@ -96,6 +100,20 @@ public class SubastaServicioImpl implements SubastaServicio {
         subastaRepositorio.eliminarProductoSubasta(nombre, idProducto);
     }
 
-    
+    @Override
+    public List<Producto> consultarProductosNoAgregadosSubastas() throws LukaException {
+        var productosEnSubastas = this.consultarTodasLasSubastas()
+            .parallelStream()
+            .map(Subasta::getProductos)
+            .flatMap(productos -> productos.stream())
+            .map(Producto::getIdProducto)
+            .collect(Collectors.toSet());
+
+        return productoServicio.consultarTodosLosProductos()
+            .parallelStream()
+            .filter(producto -> !productosEnSubastas.contains(producto.getIdProducto()))
+            .toList();
+
+    }
     
 }

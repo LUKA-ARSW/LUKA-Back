@@ -34,5 +34,8 @@ public class Producto {
     @NonNull
     private Categoria categoria;
 
+    @NonNull
+    private String vendedor;
+
     
 }

@@ -8,5 +8,6 @@ import edu.arsw.luka.lukaBack.domain.entity.ProductoEntidad;
 
 public interface MongoProductoInterface extends MongoRepository<ProductoEntidad, String> {
     List<ProductoEntidad> findByNombre(String nombre);
+    List<ProductoEntidad> findByVendedor(String vendedor);
     
 }

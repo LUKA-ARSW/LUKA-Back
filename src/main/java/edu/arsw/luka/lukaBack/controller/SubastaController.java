@@ -178,4 +178,18 @@ public class SubastaController {
             return ResponseEntity.status(500).body(ex.getMessage());
         }
     }
+
+    @GetMapping(value = "/productos")
+    public ResponseEntity<?> getProductosNoAgregadosSubastas(@RequestHeader("Autorizacion") String token) {
+        try{
+            autorizacionServicio.autorizar(token);
+            var result= subastaServicio.consultarProductosNoAgregadosSubastas();
+            return ResponseEntity.status(200).body(result);
+        }catch(LukaNoAutorizadoException e){
+            return ResponseEntity.status(403).body(e.getMessage());        
+        }catch(Exception ex){
+            return ResponseEntity.status(500).body(ex.getMessage());
+        }
+
+    }
 }
