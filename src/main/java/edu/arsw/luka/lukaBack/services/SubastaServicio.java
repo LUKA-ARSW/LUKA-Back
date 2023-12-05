@@ -24,6 +24,7 @@ public interface SubastaServicio {
     void agregarProductoSubasta(String nombre, Producto producto) throws LukaException;
     void eliminarProductoSubasta(String nombre, String idProducto) throws LukaException;
     List<Subasta> consultarSubastaPorTipo(TipoSubasta tipoSubasta) throws LukaException;
+    List<Producto> consultarProductosNoAgregadosSubastas() throws LukaException;
    
     
 }

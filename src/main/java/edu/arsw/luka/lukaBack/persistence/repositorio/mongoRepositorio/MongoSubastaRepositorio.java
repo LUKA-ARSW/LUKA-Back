@@ -40,7 +40,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                 producto.getDescripcion(), 
                 producto.getFoto(), 
                 producto.getPrecio(), 
-                producto.getCategoria())
+                producto.getCategoria(),
+                producto.getVendedor()
+            )
         ).collect(Collectors.toList()));
 
         subastaEntidad.setEstado(subasta.getEstado());
@@ -61,7 +63,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                     producto.getDescripcion(), 
                     producto.getFoto(), 
                     producto.getPrecio(), 
-                    producto.getCategoria())
+                    producto.getCategoria(),
+                    producto.getVendedor()
+                )
             ).collect(Collectors.toList())
            
         );
@@ -98,7 +102,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                     producto.getDescripcion(), 
                     producto.getFoto(), 
                     producto.getPrecio(), 
-                    producto.getCategoria())
+                    producto.getCategoria(),
+                    producto.getVendedor()
+                )
             ).collect(Collectors.toList())
            
         );
@@ -120,7 +126,8 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                         producto.getDescripcion(), 
                         producto.getFoto(), 
                         producto.getPrecio(), 
-                        producto.getCategoria()
+                        producto.getCategoria(),
+                        producto.getVendedor()
                     )
                 ).collect(Collectors.toList())
             )
@@ -149,7 +156,8 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                     producto.getDescripcion(), 
                     producto.getFoto(), 
                     producto.getPrecio(), 
-                    producto.getCategoria()
+                    producto.getCategoria(),
+                    producto.getVendedor()
                 )
             ).collect(Collectors.toList())
         );

@@ -120,5 +120,20 @@ public class ProductoController {
             return ResponseEntity.status(500).body(ex.getMessage());
         }
     }
+
+    @GetMapping(value = "/vendedor/{idVendedor}")
+    public ResponseEntity<?> getProductosPorVendedor(@PathVariable("idVendedor") String idVendedor,
+        @RequestHeader("Autorizacion") String token
+    ) {
+        try{
+            autorizacionServicio.autorizar(token);
+            var result = productoServicio.consultarProductosPorVendedor(idVendedor);
+            return ResponseEntity.status(200).body(result);
+        }catch(LukaNoAutorizadoException e){
+            return ResponseEntity.status(403).body(e.getMessage());
+        }catch(Exception ex){
+            return ResponseEntity.status(500).body(ex.getMessage());
+        }
+    }
     
 }

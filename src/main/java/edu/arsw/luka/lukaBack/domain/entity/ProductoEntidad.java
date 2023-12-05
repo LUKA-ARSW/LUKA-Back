@@ -22,5 +22,5 @@ public class ProductoEntidad {
     private String foto;
     private Double precio;    
     private Categoria categoria;
-    
+    private String vendedor;
 }
