@@ -14,5 +14,6 @@ public interface ProductoRepositorio {
     List<Producto> consultarProductoPorNombre(String nombre) throws LukaException;
     Producto modificarProducto(String idProducto, Producto producto) throws LukaException;
     void eliminarProducto(String idProducto) throws LukaException;
+    List<Producto> consultarProductosPorVendedor(String idVendedor) throws LukaException;
     
 }

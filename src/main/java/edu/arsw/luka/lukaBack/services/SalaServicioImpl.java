@@ -6,7 +6,9 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Sala;
+import edu.arsw.luka.lukaBack.domain.Subasta;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 import edu.arsw.luka.lukaBack.persistence.repositorio.SalaRepositorio;
 
@@ -54,4 +56,27 @@ public class SalaServicioImpl implements SalaServicio{
         salaRepositorio.pujarPorProducto(nombre,cantidadAPujar, comprador, idProducto);
     }
     
+    @Override
+    public List<Subasta> consultarSubastasPorUsuario(String comprador,Estado estado){  
+        
+        var subastasPorComprador = this.consultarTodasLasSalas().stream()
+            .filter(sala -> sala.getCompradores().contains(comprador));
+        
+        if (estado != null) {
+            subastasPorComprador = subastasPorComprador
+                .filter(sala -> sala.getSubasta().getEstado().equals(estado));            
+        }
+
+        return subastasPorComprador
+            .map(Sala::getSubasta)
+            .toList();       
+    }
+
+    @Override
+    public Sala consultarSalasPorSubasta(String nombreSubasta) throws LukaException{
+        return this.consultarTodasLasSalas().stream()
+            .filter(sala -> sala.getSubasta().getNombre().equals(nombreSubasta))
+            .findFirst()
+            .orElseThrow(() -> new LukaException("No se encontro la sala con la subasta: " + nombreSubasta));
+    }
 }

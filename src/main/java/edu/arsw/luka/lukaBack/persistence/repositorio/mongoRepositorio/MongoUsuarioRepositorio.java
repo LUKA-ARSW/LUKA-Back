@@ -4,9 +4,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.util.Pair;
 import org.springframework.stereotype.Repository;
 
 import edu.arsw.luka.lukaBack.domain.Comprador;
+import edu.arsw.luka.lukaBack.domain.CuentaBancaria;
+import edu.arsw.luka.lukaBack.domain.Rol;
 import edu.arsw.luka.lukaBack.domain.Usuario;
 import edu.arsw.luka.lukaBack.domain.entity.UsuarioEntidad;
 import edu.arsw.luka.lukaBack.exception.LukaException;
@@ -24,7 +27,12 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
     }
 
     @Override
-    public Usuario crearUsuario(Usuario usuario) throws LukaException {
+    public Usuario crearUsuario(Usuario usuario) throws LukaException{
+        return this.crearUsuario(usuario, usuario.getNumDocumento());
+    }
+
+    @Override
+    public Usuario crearUsuario(Usuario usuario, String numeroCuenta) throws LukaException {
         UsuarioEntidad usuarioEntidad = new UsuarioEntidad();
         usuarioEntidad.setNombre(usuario.getNombre());
         usuarioEntidad.setNombreUsuario(usuario.getNombreUsuario());
@@ -32,6 +40,11 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
         usuarioEntidad.setTipoDocumento(usuario.getTipoDocumento());
         usuarioEntidad.setNumDocumento(usuario.getNumDocumento());
         usuarioEntidad.setContrasena(usuario.getContrasena());
+        usuarioEntidad.setRol(usuario.getRol());
+
+        if (!usuarioEntidad.getRol().equals(Rol.ADMINISTRADOR)) {
+            usuarioEntidad.setCuentaBancaria(new CuentaBancaria(numeroCuenta));
+        }
 
         UsuarioEntidad usuarioResult = mongoUsuarioInterface.save(usuarioEntidad);
 
@@ -41,29 +54,35 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
             usuarioResult.getCorreo(),
             usuarioResult.getTipoDocumento(),
             usuarioResult.getNumDocumento(),
-            usuarioResult.getContrasena()
+            usuarioResult.getContrasena(),
+            usuarioResult.getRol()
+
         );
     }
 
     @Override
-    public Usuario login(String correo, String contrasena) throws LukaException, LukaLoginException {
+    public Pair<Usuario,CuentaBancaria> login(String correo, String contrasena) throws LukaException, LukaLoginException {
         UsuarioEntidad usuarioEntidad = mongoUsuarioInterface.findByCorreoAndContrasena(correo, contrasena);
         
         if(usuarioEntidad==null)
             throw new LukaLoginException("El usuario o contraseña no son validos");
 
-        return new Usuario(
-            usuarioEntidad.getNombre(),
-            usuarioEntidad.getNombreUsuario(),
-            usuarioEntidad.getCorreo(),
-            usuarioEntidad.getTipoDocumento(),
-            usuarioEntidad.getNumDocumento(),
-            usuarioEntidad.getContrasena()
+        return Pair.of(
+            new Usuario(
+                usuarioEntidad.getNombre(),
+                usuarioEntidad.getNombreUsuario(),
+                usuarioEntidad.getCorreo(),
+                usuarioEntidad.getTipoDocumento(),
+                usuarioEntidad.getNumDocumento(),
+                usuarioEntidad.getContrasena(),
+                usuarioEntidad.getRol()
+            ),
+            usuarioEntidad.getCuentaBancaria()
         );
 
     }
 
-    @Override
+   @Override
     public Usuario consultarUsuarioPorCorreo(String correo) throws LukaException {
         UsuarioEntidad usuarioEntidad = mongoUsuarioInterface.findById(correo).orElseThrow(() -> new LukaException("No existe el usuario"));
 
@@ -73,7 +92,8 @@ public class MongoUsuarioRepositorio implements UsuarioRepositorio{
             usuarioEntidad.getCorreo(),
             usuarioEntidad.getTipoDocumento(),
             usuarioEntidad.getNumDocumento(), 
-            usuarioEntidad.getContrasena()      
+            usuarioEntidad.getContrasena(),
+            usuarioEntidad.getRol()    
         );
     }
 

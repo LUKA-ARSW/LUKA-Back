@@ -29,5 +29,8 @@ public class Usuario {
 
     @NonNull
     private String contrasena;
+
+    @NonNull
+    private Rol rol;
     
 }

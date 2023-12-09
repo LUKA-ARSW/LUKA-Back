@@ -7,6 +7,7 @@ import java.util.List;
 import edu.arsw.luka.lukaBack.domain.Estado;
 import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
+import edu.arsw.luka.lukaBack.domain.TipoSubasta;
 import edu.arsw.luka.lukaBack.exception.LukaException;
 
 public interface SubastaServicio {
@@ -16,12 +17,14 @@ public interface SubastaServicio {
     List<Subasta>consultarTodasLasSubastas();
     Subasta consultarSubastaPorNombre(String nombre) throws LukaException;
 
-    Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin) throws LukaException;
+    Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean cambiarTipo) throws LukaException;
 
     Subasta modificarEstadoSubasta(String nombre) throws LukaException;
     void eliminarSubasta(String nombre) throws LukaException;
     void agregarProductoSubasta(String nombre, Producto producto) throws LukaException;
     void eliminarProductoSubasta(String nombre, String idProducto) throws LukaException;
+    List<Subasta> consultarSubastaPorTipo(TipoSubasta tipoSubasta) throws LukaException;
+    List<Producto> consultarProductosNoAgregadosSubastas() throws LukaException;
    
     
 }

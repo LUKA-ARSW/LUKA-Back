@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 
 import edu.arsw.luka.lukaBack.domain.Producto;
 import edu.arsw.luka.lukaBack.domain.Subasta;
+import edu.arsw.luka.lukaBack.domain.TipoSubasta;
 import edu.arsw.luka.lukaBack.domain.entity.ProductoEntidad;
 import edu.arsw.luka.lukaBack.domain.entity.SubastaEntidad;
 import edu.arsw.luka.lukaBack.exception.LukaException;
@@ -30,6 +31,7 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
         subastaEntidad.setNombre(subasta.getNombre());
         subastaEntidad.setFechaInicio(subasta.getFechaInicio());
         subastaEntidad.setFechaFin(subasta.getFechaFin());
+        subastaEntidad.setTipoSubasta(subasta.getTipoSubasta());
 
         subastaEntidad.setProductos(subasta.getProductos().stream().map(producto -> 
             new ProductoEntidad( 
@@ -38,7 +40,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                 producto.getDescripcion(), 
                 producto.getFoto(), 
                 producto.getPrecio(), 
-                producto.getCategoria())
+                producto.getCategoria(),
+                producto.getVendedor()
+            )
         ).collect(Collectors.toList()));
 
         subastaEntidad.setEstado(subasta.getEstado());
@@ -49,7 +53,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
             subastaResult.getNombre(),
             subastaResult.getFechaInicio(),
             subastaResult.getFechaFin(),
-             subastaResult.getEstado(),
+            subastaResult.getTipoSubasta(),
+            subastaResult.getEstado(),
+
             subastaResult.getProductos().stream().map(producto -> 
                 new Producto( 
                     producto.getIdProducto(),
@@ -57,7 +63,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                     producto.getDescripcion(), 
                     producto.getFoto(), 
                     producto.getPrecio(), 
-                    producto.getCategoria())
+                    producto.getCategoria(),
+                    producto.getVendedor()
+                )
             ).collect(Collectors.toList())
            
         );
@@ -65,9 +73,19 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
     }
 
     @Override
-    public Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin) throws LukaException{
+    public Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean cambiarTipo) throws LukaException{
         SubastaEntidad subastaEntidad = mongoSubastaInterface.findById(nombre)
                                         .orElseThrow(() -> new LukaException("No existe la subasta"));
+        if(!subastaEntidad.getTipoSubasta().fechasCoinciden(fechaInicio, fechaFin) && !cambiarTipo){
+            throw new LukaException("Las fechas no coinciden con el tipo de subasta");
+        }else if (cambiarTipo){
+            subastaEntidad.setTipoSubasta(
+                switch (subastaEntidad.getTipoSubasta()) {
+                    case CORTA -> TipoSubasta.LARGA;
+                    case LARGA -> TipoSubasta.CORTA;
+                }
+            );
+        }
         subastaEntidad.setFechaInicio(fechaInicio);
         subastaEntidad.setFechaFin(fechaFin);
         SubastaEntidad subastaResult=mongoSubastaInterface.save(subastaEntidad);
@@ -75,6 +93,7 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
             subastaResult.getNombre(),
             subastaResult.getFechaInicio(),
             subastaResult.getFechaFin(),
+            subastaResult.getTipoSubasta(),
             subastaResult.getEstado(),
             subastaResult.getProductos().stream().map(producto -> 
                 new Producto( 
@@ -83,7 +102,9 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                     producto.getDescripcion(), 
                     producto.getFoto(), 
                     producto.getPrecio(), 
-                    producto.getCategoria())
+                    producto.getCategoria(),
+                    producto.getVendedor()
+                )
             ).collect(Collectors.toList())
            
         );
@@ -96,6 +117,7 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                 subasta.getNombre(),
                 subasta.getFechaInicio(),
                 subasta.getFechaFin(),
+                subasta.getTipoSubasta(),
                 subasta.getEstado(),
                 subasta.getProductos().stream().map(producto -> 
                     new Producto( 
@@ -104,7 +126,8 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                         producto.getDescripcion(), 
                         producto.getFoto(), 
                         producto.getPrecio(), 
-                        producto.getCategoria()
+                        producto.getCategoria(),
+                        producto.getVendedor()
                     )
                 ).collect(Collectors.toList())
             )
@@ -124,6 +147,7 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
             subasta.getNombre(),
             subasta.getFechaInicio(),
             subasta.getFechaFin(),
+            subasta.getTipoSubasta(),
             subasta.getEstado(),
             subasta.getProductos().stream().map(producto -> 
                 new Producto( 
@@ -132,7 +156,8 @@ public class MongoSubastaRepositorio implements SubastaRepositorio{
                     producto.getDescripcion(), 
                     producto.getFoto(), 
                     producto.getPrecio(), 
-                    producto.getCategoria()
+                    producto.getCategoria(),
+                    producto.getVendedor()
                 )
             ).collect(Collectors.toList())
         );

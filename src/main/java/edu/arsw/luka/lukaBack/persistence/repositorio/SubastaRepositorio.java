@@ -11,7 +11,7 @@ public interface SubastaRepositorio {
     
     Subasta agregarSubasta(Subasta subasta) throws LukaException;
 
-    Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin) throws LukaException;
+    Subasta modificarFechaSubasta(String nombre,LocalDateTime fechaInicio, LocalDateTime fechaFin, boolean cambiarTipo) throws LukaException;
 
     List<Subasta> consultarTodasLasSubastas();
     

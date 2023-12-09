@@ -46,5 +46,10 @@ public class ProductoServicioImpl implements ProductoServicio {
         productoRepositorio.eliminarProducto(idProducto);
     }
 
+    @Override
+    public List<Producto> consultarProductosPorVendedor(String idVendedor) throws LukaException {
+        return productoRepositorio.consultarProductosPorVendedor(idVendedor);
+    }
+
     
 }

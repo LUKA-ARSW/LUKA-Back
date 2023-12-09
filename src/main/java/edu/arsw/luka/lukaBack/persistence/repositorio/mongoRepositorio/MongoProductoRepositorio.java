@@ -32,6 +32,7 @@ public class MongoProductoRepositorio implements ProductoRepositorio {
         productoEntidad.setFoto(producto.getFoto());
         productoEntidad.setPrecio(producto.getPrecio());
         productoEntidad.setCategoria(producto.getCategoria());
+        productoEntidad.setVendedor(producto.getVendedor());
 
         ProductoEntidad productoResult = mongoProductoInterface.save(productoEntidad);
 
@@ -41,7 +42,8 @@ public class MongoProductoRepositorio implements ProductoRepositorio {
             productoResult.getDescripcion(), 
             productoResult.getFoto(), 
             productoResult.getPrecio(), 
-            productoResult.getCategoria()
+            productoResult.getCategoria(),
+            productoResult.getVendedor()
         );
 
     }
@@ -55,7 +57,8 @@ public class MongoProductoRepositorio implements ProductoRepositorio {
                 producto.getDescripcion(), 
                 producto.getFoto(), 
                 producto.getPrecio(), 
-                producto.getCategoria()
+                producto.getCategoria(),
+                producto.getVendedor()
             )
         ).collect(Collectors.toList());
     }
@@ -71,7 +74,8 @@ public class MongoProductoRepositorio implements ProductoRepositorio {
                 productoEntidad.getDescripcion(), 
                 productoEntidad.getFoto(), 
                 productoEntidad.getPrecio(), 
-                productoEntidad.getCategoria()
+                productoEntidad.getCategoria(),
+                productoEntidad.getVendedor()
         );
     }
 
@@ -84,7 +88,8 @@ public class MongoProductoRepositorio implements ProductoRepositorio {
                 producto.getDescripcion(), 
                 producto.getFoto(), 
                 producto.getPrecio(), 
-                producto.getCategoria()
+                producto.getCategoria(),
+                producto.getVendedor()
             )
         ).collect(Collectors.toList());
 
@@ -110,13 +115,29 @@ public class MongoProductoRepositorio implements ProductoRepositorio {
             productoResult.getDescripcion(), 
             productoResult.getFoto(), 
             productoResult.getPrecio(), 
-            productoResult.getCategoria()
+            productoResult.getCategoria(),
+            productoResult.getVendedor()
         );
     }
 
     @Override
     public void eliminarProducto(String idProducto) throws LukaException {
         mongoProductoInterface.deleteById(idProducto);
+    }
+
+    @Override
+    public List<Producto> consultarProductosPorVendedor(String idVendedor) throws LukaException {
+        return mongoProductoInterface.findByVendedor(idVendedor).stream().map(producto -> 
+            new Producto( 
+                producto.getIdProducto(),
+                producto.getNombre(), 
+                producto.getDescripcion(), 
+                producto.getFoto(), 
+                producto.getPrecio(), 
+                producto.getCategoria(),
+                producto.getVendedor()
+            )
+        ).collect(Collectors.toList());
     }
 
 }
