@@ -72,7 +72,7 @@ public class UsuarioServicioTest extends TestCase{
             TipoDocumento.valueOf("CC"),
             "40377232",
             "estella-123",
-            Rol.valueOf("AMBAS")
+            Rol.valueOf("AMBOS")
 
         );
     }
@@ -117,12 +117,12 @@ public class UsuarioServicioTest extends TestCase{
         @Test
     public void deberiaLanzarErrorSiRolNoCorresponde(){
         var nuevoUsuarioMap = new HashMap<String,String>(usuarioCorrectoMap);
-        nuevoUsuarioMap.put("Rol", "CC2");
+        nuevoUsuarioMap.put("rol", "CC2");
         assertThrows(IllegalArgumentException.class, () -> {
             usuarioServicio.crearUsuario(nuevoUsuarioMap);
         });
         
-        nuevoUsuarioMap.put("Rol", null);
+        nuevoUsuarioMap.put("rol", null);
         assertThrows(NullPointerException.class, () -> {
             usuarioServicio.crearUsuario(nuevoUsuarioMap);
         });
