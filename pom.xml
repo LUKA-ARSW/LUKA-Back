@@ -126,9 +126,12 @@
 			<artifactId>jedis</artifactId>
 			<version>4.4.6</version>
 		</dependency>
-
-
-	
+		<!-- https://mvnrepository.com/artifact/org.jacoco/jacoco-maven-plugin -->
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.8.11</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -145,7 +148,33 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.7</version>
+				<executions>
+					<execution>
+					<goals>
+						<goal>prepare-agent</goal>
+						<goal>report</goal>
+					</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<excludes>
+						<exclude>**/domain/**</exclude>			
+						<exclude>**/controller/**</exclude>
+						<exclude>**/config/**</exclude>
+						<exclude>**/util/**</exclude>
+						<excludes>**/repositorio/**</excludes>
+						<excludes>**/exception/**</excludes>
+						<excludes>**/LukaBackApplication*</excludes>
+					</excludes>
+				</configuration>
+    		</plugin>
 		</plugins>
+
 	</build>
+
 	
 </project>
